@@ -3,7 +3,7 @@
 #include "esp_task_wdt.h"
                                         // https://github.com/alexandresvifpb/Iot_Bov.git
                                         // D:\Users\alexa\OneDrive\doutorado\2020\prototipos\firmware\tests\Test_Gateway_LoRa_TTGO-LoRA32-V1_V02
-#define MAIN_MESSAGE_INITIAL            ("D:\\Users\\alexa\\OneDrive\\doutorado\\2020\\prototipos\\firmware\\tests\\Test_Gateway_LoRa_TTGO-LoRa32-V1_V02.2")          // localizacao do projeto
+#define MAIN_MESSAGE_INITIAL            ("D:\\Users\\alexa\\OneDrive\\doutorado\\2020\\prototipos\\firmware\\tests\\Test_Gateway_LoRa_TTGO-LoRa32-V1_V02.3")          // localizacao do projeto
 #define MAIN_DEBUG                      (true)          // Variable that enables (1) or disables (0) the sending of data by serial to debug the program
 #define MAIN_CORE_0                     (0)             // Defined the core to be used
 #define MAIN_CORE_1                     (1)             
