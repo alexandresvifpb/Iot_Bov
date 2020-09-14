@@ -23,9 +23,9 @@ String get_value(String data, char separator, int index);
 WiFi_GateWay::WiFi_GateWay() {}
 
 // WiFi
-uint8_t const number_wifi_routers = 3;
-String ssid[number_wifi_routers] = {"XTEC - ACARSV", "brisa-594111", "AMD"};  // {"brisa-594111", "XTEC - ACARSV", "AMD"};
-String pass[number_wifi_routers] = {"mtek2003", "gbalklxz", "amd12345678"};   // {"gbalklxz", "mtek2003", "amd12345678"};
+uint8_t const number_wifi_routers = 4;
+String ssid[number_wifi_routers] = {"XTEC - ACARSV", "brisa-594111", "AMD", "AndroidAP"};  // {"brisa-594111", "XTEC - ACARSV", "AMD"};
+String pass[number_wifi_routers] = {"mtek2003", "gbalklxz", "amd12345678", "rkzr1138"};   // {"gbalklxz", "mtek2003", "amd12345678"};
 
 // Initializes the class
 bool WiFi_GateWay::begin(String device_id) {

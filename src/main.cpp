@@ -223,7 +223,7 @@ void TaskLoRa( void * pvParameters ) {
       String message_number_node_connected = "TASK_GATEWAY_LORA: ";
       message_number_node_connected += lora.get_size_list_node();
       message_number_node_connected += " node connected";
-      Serial.print(message_number_node_connected);
+      Serial.println(message_number_node_connected);
       wifi_client.send_message_client_WS(message_number_node_connected);
       last_time = millis();
     }
