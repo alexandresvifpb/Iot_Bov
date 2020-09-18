@@ -24,8 +24,8 @@ WiFi_GateWay::WiFi_GateWay() {}
 
 // WiFi
 uint8_t const number_wifi_routers = 4;
-String ssid[number_wifi_routers] = {"XTEC - ACARSV", "brisa-594111", "AMD", "AndroidAP"};  // {"brisa-594111", "XTEC - ACARSV", "AMD"};
-String pass[number_wifi_routers] = {"mtek2003", "gbalklxz", "amd12345678", "rkzr1138"};   // {"gbalklxz", "mtek2003", "amd12345678"};
+String ssid[number_wifi_routers] = {"XTEC - ACARSV", "brisa-594111", "AMD", "AndroidAP"};   // {"brisa-594111", "XTEC - ACARSV", "AMD"};
+String pass[number_wifi_routers] = {"mtek2003", "gbalklxz", "amd12345678", "rkzr1138"};     // {"gbalklxz", "mtek2003", "amd12345678"};
 
 // Initializes the class
 bool WiFi_GateWay::begin(String device_id) {
@@ -53,6 +53,7 @@ bool WiFi_GateWay::connect_wifi_STD_mode(void) {
   }
   */
 
+  /*
   for (uint8_t i = 0; i < number_wifi_routers; i++) {
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid[i].c_str(),pass[i].c_str());
@@ -74,7 +75,42 @@ bool WiFi_GateWay::connect_wifi_STD_mode(void) {
       
     WiFi.mode(WIFI_OFF);
   }
+  */
   
+  bool _connected = false;
+
+  for (uint8_t i = 0; i < 30; i++) {
+
+    if (_connected) {
+      Serial.println("CONNECTED.... ");
+      return true;
+    }
+
+    Serial.print("WIFI_TRY #");
+    Serial.println(i);
+
+    for (uint8_t j = 0; j < number_wifi_routers; j++) {
+
+      WiFi.mode(WIFI_STA);
+      WiFi.begin(ssid[j].c_str(),pass[j].c_str());
+
+      Serial.print("Wait connecting to WiFi ");
+      Serial.println(ssid[j]);
+      delay(5000);
+
+      if (active_webserver()) {
+        _connected = true;
+        break;
+      } else {
+        WiFi.reconnect();
+        delay(2000);
+        WiFi.mode(WIFI_OFF);
+      }
+      
+    }
+    
+  }
+   
 
   return active_webserver();
 }
