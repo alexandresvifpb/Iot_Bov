@@ -266,6 +266,11 @@ void TaskLoRa( void * pvParameters ) {
 
         new_message.id = message_recv.sourcer_device_id;
         new_message.type = 1;
+        // new_message.type = message_recv.message_type;
+        // new_message.payload = message_recv.payload;
+        message_recv.payload.replace("\"","");
+
+        Serial.println(message_recv.payload);
         new_message.payload = message_recv.payload;
 
         // Reseta o contador de falha REQUEST

@@ -329,6 +329,10 @@ boolean MQTT_Client::begin(void) {
   Serial.println(__LINE__);
   
   mqtt_topic_subscribe = MQTT_TOPIC_SUBSCRIBE + wifi_device_id;
+
+  Serial.print("mqtt_topic_subscribe");
+  Serial.println(mqtt_topic_subscribe);
+
   active_MQTT();
   return true;
 }
@@ -428,10 +432,40 @@ void MQTT_Client::send_message(String message) {
   }
 
   Serial.print("MQTT_SEND: ");
+  Serial.print(MQTT_TOPIC_PUBLISH);
+  Serial.print(" ");
   Serial.println(message);
+
+  // message.replace("\"[","[");
+  // message.replace("]\"","]");
+  // Serial.println(message);
 
   gt_mqtt_client.publish(MQTT_TOPIC_PUBLISH, message.c_str());
 
+}
+
+void send_message(mqtt_t message) {
+
+  String _strJSON;
+
+  StaticJsonDocument<256> _doc;
+
+  JsonObject _root = _doc.to<JsonObject>();
+
+  _root["id"] = message.id;
+  _root["type"] = 9;
+  // _root["payload"] = message.payload;
+
+  JsonArray _payload  = _root.createNestedArray("payload");
+  _payload.add(1);
+  _payload.add(2);
+  _payload.add(3);
+
+  if (serializeJson(_doc, _strJSON) == 0) {
+    Serial.println(F("Failed to write to file"));
+  }
+
+  gt_mqtt_client.publish(MQTT_TOPIC_PUBLISH, _strJSON.c_str());
 }
 
 //Private

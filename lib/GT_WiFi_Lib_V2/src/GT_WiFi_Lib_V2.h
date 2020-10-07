@@ -19,8 +19,8 @@
 
 // MQTT
 #define MQTT_TOPIC_SUBSCRIBE   "/GATEWAY/"
-#define MQTT_TOPIC_PUBLISH     "/NODES/"
-#define MQTT_SERVER            "test.mosquitto.org"       // "192.168.1.15"      //  "192.168.10.50" "10.0.5.50" "192.168.1.2" "ec2-52-14-53-218.us-east-2.compute.amazonaws.com"  "192.168.1.7" "150.165.82.50"
+#define MQTT_TOPIC_PUBLISH     "/NODES/PRMA/"
+#define MQTT_SERVER            "ec2-15-228-8-211.sa-east-1.compute.amazonaws.com"     //"test.mosquitto.org"       // "192.168.1.15"      //  "192.168.10.50" "10.0.5.50" "192.168.1.2" "ec2-52-14-53-218.us-east-2.compute.amazonaws.com"  "192.168.1.7" "150.165.82.50"
 // #define MQTT_SERVER             "things.ubidots.com"
 #define MQTT_PORT               1883                //  1883 995
 #define MQTT_TOKEN              ""
