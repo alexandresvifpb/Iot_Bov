@@ -31,6 +31,7 @@
 // #define MQTT_UBIDOTS_TOKEN      "BBFF-jmgM7LpxCufFGbQseCSDSkD78yL4TL"
 
 #define MQTT_TASK_DELAY_MS      200
+#define MQTT_ACTIVE_DELAY_MS    120000
 
 typedef struct {
     String id;

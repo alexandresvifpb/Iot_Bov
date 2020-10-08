@@ -56,6 +56,12 @@ void LoRaGatewayLib::run(void) {
     _message_recv.RSSI = message_temp.RSSI;
     _message_recv.SNR = message_temp.SNR;
 
+      // colocado para depuracao, retirar depois 
+      // Serial.print("_message_recv.target_device_id: ");
+      // Serial.println(_message_recv.target_device_id);
+      // Serial.print("lora_device_id: ");
+      // Serial.println(lora_device_id);
+
     // verifica se a mensagem recebida é para este device ou uma broadcast
     if ( _message_recv.target_device_id == lora_device_id || ( _message_recv.target_device_id == "ffffff") || ( _message_recv.target_device_id == "FFFFFF") ) {
 

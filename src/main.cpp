@@ -3,7 +3,7 @@
 #include "esp_task_wdt.h"
                                         // https://github.com/alexandresvifpb/Iot_Bov.git
                                         // D:\Users\alexa\OneDrive\doutorado\2020\prototipos\firmware\tests\Test_Gateway_LoRa_TTGO-LoRA32-V1_V02
-#define MAIN_MESSAGE_INITIAL            ("D:\\Users\\alexa\\OneDrive\\doutorado\\2020\\prototipos\\firmware\\tests\\Test_Gateway_LoRa_TTGO-LoRa32-V1_V02.3")          // localizacao do projeto
+#define MAIN_MESSAGE_INITIAL            ("D:\\Users\\alexa\\OneDrive\\doutorado\\2020\\prototipos\\firmware\\tests\\Test_Gateway_LoRa_TTGO-LoRa32-V1_V02.05")          // localizacao do projeto
 #define MAIN_DEBUG                      (true)          // Variable that enables (1) or disables (0) the sending of data by serial to debug the program
 #define MAIN_CORE_0                     (0)             // Defined the core to be used
 #define MAIN_CORE_1                     (1)             
@@ -44,6 +44,7 @@ LoRaGatewayLib lora;
 boolean lora_enable = false;
 boolean device_connected = false;
 uint8_t device_type = GATEWAY;
+uint8_t number_nodes = 0;        // Network
 
 void setup() {
   // Serial Initialization
@@ -160,6 +161,8 @@ void TaskMQTT( void * pvParameters ) {
 
   Serial.println(__LINE__);
 
+  long active_client_delay = millis();
+
   // if ( wifi_connected && mqtt_client.begin() ) {
   if ( mqtt_client.begin() ) {
 
@@ -184,6 +187,12 @@ void TaskMQTT( void * pvParameters ) {
       // Verifica se existe alguma mensagem na lista de envio
       if ( mqtt_client.is_send_list_empty() ) {
         mqtt_client.send_message(mqtt_client.get_next_send_message());
+      }
+
+      // Enviar uma mensagem para o broker a cada 60 segundos
+      if ( ( millis() - active_client_delay) > MQTT_ACTIVE_DELAY_MS ) {
+        active_client_delay = millis();
+        mqtt_client.send_message("Gateway " + String(device_id) + " ON and with " + String(number_nodes) + " nodes connected");
       }
 
     } else {
@@ -211,7 +220,7 @@ void TaskLoRa( void * pvParameters ) {
   long last_time = 0;
   long last_time_request = 0;       // Network
   // uint8_t node_index = 0;           // Network
-  uint8_t number_nodes = 0;        // Network
+  // uint8_t number_nodes = 0;        // Network
 
   // Mandatory infinite loop to keep the Task running
   while( true ) {
@@ -226,6 +235,11 @@ void TaskLoRa( void * pvParameters ) {
       Serial.println(message_number_node_connected);
       wifi_client.send_message_client_WS(message_number_node_connected);
       last_time = millis();
+
+      // // colocado para depuracao, retirar depois 
+      // Serial.print("lora.is_recv_list_empty(): ");
+      // Serial.println(lora.is_recv_list_empty());
+
     }
 
     // vefica se a lista de mensagens recebidas estar vazia
@@ -235,13 +249,18 @@ void TaskLoRa( void * pvParameters ) {
       mqtt_t new_message;
 
       // Verifica se existe clientes wifi conectador no WS
-      if ( wifi_client.number_connected_clients_WS() > 0 ) {
+      // if ( wifi_client.number_connected_clients_WS() > 0 ) {
+      if ( wifi_client.number_connected_clients_WS() > 0 && message_recv.payload != "" ) {
         // enviar todas as mensagem recebidas pelo radio LoRa
         String wifi_payload = message_recv.payload;
         wifi_payload.replace("]",",");
         wifi_payload += String(message_recv.RSSI) + "," + String(message_recv.SNR, 2) + "]";
         wifi_client.send_message_client_WS(wifi_payload);
       }
+
+      // // colocado para depuracao, retirar depois 
+      // Serial.print("message_recv.message_type: ");
+      // Serial.println(message_recv.message_type);
 
       switch (message_recv.message_type)
       {
@@ -283,6 +302,9 @@ void TaskLoRa( void * pvParameters ) {
       default:
         break;
       }
+    } else {
+      // Serial.println(__LINE__);
+      // Serial.println(__LINE__);
     }
 
     // vefica se a lista de mensagens a ser enviadas estar vazia
